@@ -6,7 +6,7 @@ namespace LibraryApi.Models
 {
     public class GetBooksResponse : HttpCollection<BookSummaryItem>
     {
-
+        public string Genre { get; set; }
     }
 
     public class BookSummaryItem

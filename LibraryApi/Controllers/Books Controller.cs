@@ -23,8 +23,11 @@ namespace LibraryApi.Controllers
             // this leaks too much to the client
             //var response = Context.Books.ToList();
             var response = new GetBooksResponse();
-            var data = Context.Books
-                .Where(b => b.InInventory);
+
+            // refactor ... extract to helper method GetBooksInInventory
+            //var data = Context.Books
+            //    .Where(b => b.InInventory);
+            var data = GetBooksInInventory();
 
             if (genre != "all")
             {
@@ -33,7 +36,13 @@ namespace LibraryApi.Controllers
 
             response.Data = data.Select(b => new BookSummaryItem { Id = b.Id, Title = b.Title, Author = b.Author })
                 .ToList();
+            response.Genre = genre;
             return Ok(response);
+        }
+
+        private IQueryable<Book> GetBooksInInventory()
+        {
+            return Context.Books.Where(b => b.InInventory);
         }
     }
 }
